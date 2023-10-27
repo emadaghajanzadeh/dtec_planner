@@ -16,7 +16,7 @@ class Action:
         self.producer = producer
         self.processingTimeInWeeks = processingTimeInWeeks
         self.workingTimeInHours = workingTimeInHours
-
+        self.objectives = {}
 
     def __repr__(self):
         attributes = [
@@ -41,15 +41,14 @@ class Action:
         Get all objectives on which the optimization should be performed
         ! Ask how to sum deliveryTimeLatestInWeeks with the other two variables
         '''
-        objectives = {}
-        objectives["cost"] = self.costs
-        objectives["workingTimeInHours"] = self.workingTimeInHours
+        self.objectives["cost"] = self.costs
+        self.objectives["workingTimeInHours"] = self.workingTimeInHours
         maxDeliveryTime = 0
         for precondition in self.preconditions:
             maxDeliveryTime = max(maxDeliveryTime, precondition["deliveryTimeLatestInWeeks"])
-        objectives["TotalTimeInWeeks"] = self.processingTimeInWeeks + maxDeliveryTime
+        self.objectives["totalTimeInWeeks"] = self.processingTimeInWeeks + maxDeliveryTime
 
-        return objectives
+        return self.objectives
 
 
 

@@ -92,10 +92,6 @@ def isGoalAchieved(StateList, finalStates):
    if finalStates.issubset(StateList):
       return True
    return False
-   for finalState in finalStates:
-      if not isStatePresent(StateList, finalState.id):
-         return False
-   return True
 
 def isGoalAchievedBackward(StateList, initialStates):
    if StateList.issubset(initialStates): return True
@@ -112,16 +108,6 @@ def applicable(stateSet, actionPrecon):
       return True
    return False
 
-   if actionPrecon == None:
-      actionPrecon = []
-   if actionPrecon != None:
-      for precondition in actionPrecon:
-         if not isStatePresent(stateSet, precondition["state_object"].id):
-            return False
-      return True
-   else:
-      return True
-
 def apply(actionPrecon, actionEffect, currentStateSet):
    # Currently, actions have only the id of the state, so we need all state to find the intended one, but with linkning state objects it will more performant.
    # tasks: 
@@ -129,25 +115,6 @@ def apply(actionPrecon, actionEffect, currentStateSet):
    precons = set([x["state_object"] for x in actionPrecon])
    newStateSet = currentStateSet.difference(precons)
    newStateSet.add(actionEffect)
-   return newStateSet
-
-
-
-   if actionPrecon == None:
-      actionPrecon = []
-
-   newStateSet = []
-   for state in currentStateSet:
-      isPrecon = False
-      for precon in actionPrecon:
-         if state == precon["state_object"]:
-            isPrecon = True
-            break
-      if not isPrecon:
-         newStateSet.append(state)
-   
-      newStateSet.append(actionEffect)
-
    return newStateSet
 
 def applicableBackward(stateSet, actionEffect):
@@ -224,20 +191,41 @@ def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod)
                if isGoalAchievedBackward(newStateSet, initialStates):
                   newActionSequence.append(act)
                   plans.append(newActionSequence)
-                  print(f"One plan Found! {newActionSequence}")
+                  # print(f"One plan Found! {newActionSequence}")
                else:
                   newActionSequence.append(act)
                   fringe.insert([newStateSet,newActionSequence ])
                   # print(newStateSet)
                   visited.add(tuple(newStateSet))
       # print("---")
-   
+   return plans
+
+def printPlan(plan):
+   print("Sequence of actions: ")
+   for action in plan[:-1]:
+      print(f"{action}", end=" => ")
+   print(plan[-1])
+
+
+def sortPlans(plans, actionObjects, optCriteria):
+   sortedPlans = sorted(plans, key=lambda plan: sum(action.getObjectives()[optCriteria] for action in plan))
+   criteria_values = [sum(action.getObjectives()[optCriteria] for action in plan) for plan in sortedPlans]
+   print(criteria_values)
+   for plan,criteria_value in zip(plans,criteria_values) :
+      printPlan(plan)
+      print(criteria_value)
+   return sortedPlans
+
+      
+
 
 if __name__ == '__main__':
    # load the JSON file
-   producerObjects, stateObjects, actionObjects, optCriteria = jsonReader("./JsonFiles/pddlExchangeExample8.json")
+   producerObjects, stateObjects, actionObjects, optCriteria = jsonReader("./JsonFiles/pddlExchangeExample7.json")
    initialStates, finalStates = get_Init_Final_States(stateObjects)
-   forwardPlanning(initialStates, finalStates, actionObjects, "BFS")
-   # backwardPlanning(initialStates, finalStates, actionObjects, "BFS")
+   # forwardPlanning(initialStates, finalStates, actionObjects, "BFS")
+   plans = backwardPlanning(initialStates, finalStates, actionObjects, "BFS")
+   sortedPlans = sortPlans(plans, actionObjects, optCriteria)
+
 
    
