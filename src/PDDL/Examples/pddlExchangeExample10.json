@@ -1,0 +1,96 @@
+{
+    "optimizeFor": "cost",
+    "producer": [
+        {
+            "id": 1,
+            "name": "Schreinerei Frank & Söhne",
+            "trade": "carpenter",
+            "valueChainParameters": {
+                "socialCommitment": 3.5,
+                "familyFriendly": 4,
+                "sustainability": 2
+            }
+        },
+        {
+            "id": 2,
+            "name": "Glaserei Durchblick",
+            "trade": "glazier",
+            "valueChainParameters": {
+                "socialCommitment": 3,
+                "familyFriendly": 2,
+                "sustainability": 5
+            }
+        }
+    ],
+    "states": [
+        {
+            "id": 1,
+            "name": "Rohmaterial Holz",
+            "isStartState": true
+        },
+        {
+            "id": 2,
+            "name": "Rohmaterial Glas",
+            "isStartState": true
+        },
+        {
+            "id": 3,
+            "name": "Zugeschnittene Platten",
+            "isStartState": true
+        },
+        {
+            "id": 4,
+            "name": "Gelochte Platten"
+        },
+        {
+            "id": 5,
+            "name": "Montiertes Gestell"
+        },
+        {
+            "id": 6,
+            "name": "Kommode Alpha",
+            "isFinalState": true
+        }
+    ],
+    "processSteps": [
+        {
+            "id": 1,
+            "initialStateId": 1,
+            "finalStateId": 4,
+            "preconditions": [ 
+                {
+                    "id": 2,
+                    "deliveryTimeLatestInWeeks": 1.5
+                }
+            ],
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 2.5,
+            "workingTimeInHours": 8.5
+        },
+        {
+            "id": 2,
+            "initialStateId": 3,
+            "finalStateId": 5,
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 2.5,
+            "workingTimeInHours": 8.5
+        },
+        {
+            "id": 3,
+            "initialStateId": 4,
+            "finalStateId": 6,
+            "preconditions": [ 
+                {
+                    "id": 5,
+                    "deliveryTimeLatestInWeeks": 1.5
+                }
+            ],
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 3,
+            "workingTimeInHours": 8.5
+        }
+    ]
+}

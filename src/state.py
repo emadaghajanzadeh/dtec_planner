@@ -14,3 +14,11 @@ class State:
     
     def __eq__(self, other):
         return isinstance(other, State) and self.id == other.id
+    
+    def getAllAttributes(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "isStartState": self.isStartState,
+            "isFinalState": self.isFinalState
+        }

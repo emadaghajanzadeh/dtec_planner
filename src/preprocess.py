@@ -1,17 +1,21 @@
 import json
-import producer, state, action
+import producer, state, action, plan
 import fringe
+import time
+import postprocess
+import matplotlib.pyplot as plt
 # source /Users/emadaghajanzadeh/Documents/Work/Dtec/planner/planner_venv/bin/activate      
-# Notes
-# 1- Are there nagative pre-conditions in the project?
-# 2- Do we consume pre-conditions after the action is done?
-# 3- What is the difference between initial and precondition states?
-# 4- how deliveryTimeLatestInWeeks is related to processingTimeInWeeks and workingTimeInHours? I think both of the later variables are somehow dependent to the former one?
-# 5- Should we also consider special scenarios wherein initial and final states are not determined, or it is ensured we are given them correctly.
-# Please refer to the knowledge base for further questions.
-# 6- In Backward planning, removing precondition after oing an action is not considered but I think that is not problematic asince we only deal with trees.
 
 def jsonReader(jsonFilename):
+   """
+   This function gets the address of the Json file, extracts its content, and instantiates objects corresponding to data types.
+   Input: Adress of the Jsonfile
+   Output: 
+         producer_objects: list of producer objects
+         state_objects: list of state objects
+         action_objects: list of action objects
+         opt_criteria: a string shows the optimization goal (Can be changed to a list consists of multiple optimization criteria)
+   """
    # Read the json file
    with open(jsonFilename) as f:
       data = json.load(f)
@@ -67,9 +71,33 @@ def jsonReader(jsonFilename):
          opt_criteria =  value_list
    return producer_objects, state_objects, action_objects, opt_criteria
 
+def writeToJson(sortedPlans, outputFileName):
+   """Writing the output into the Json file."""
+   if len(sortedPlans) == 0:
+      data = {"optimizeFor": optCriteria, "Minimum Plan": "-", "Maximum Plan":"-",
+              "Number of Plans":0}
+   else:
+      data = {"optimizeFor": optCriteria, "Minimum Plan":sortedPlans[0].getPlanValue(), "Maximum Plan":sortedPlans[-1].getPlanValue()}
+      data["Number of Plans"] = len(sortedPlans)
+      plans_list = [] # list of dictionaries (plans)
+      for plan in sortedPlans:
+         plan_dict = {}
+         actions = []
+         for action in plan.getActionSequence():
+            actions.append(action.getAllAttributes())
+         plan_dict["plan_id"] = plan.getPlanId()
+         plan_dict["actions"] = actions
+         plan_dict["plan_value"] = plan.getPlanValue()
+         plans_list.append(plan_dict)
+      data["plans"] = plans_list
+   json_object = json.dumps(data, indent=4)
+   with open(outputFileName, "w") as outfile:
+      outfile.write(json_object)
+
 
 #--------------State-related functions---------------------------
 def get_Init_Final_States(stateList):
+   """This function checks the list of states and returns initial and final states."""
    initialStates = set()
    finalStates = set()
    for state in stateList:
@@ -79,45 +107,59 @@ def get_Init_Final_States(stateList):
             finalStates.add(state)
    return initialStates, finalStates
 
-def isStatePresent(stateList, stateID):
-   '''
-   Checks if a specific state is already present in a given state list.
-   '''
-   for state in stateList:
-      if state.id == stateID:
-         return True
-   return   False
-
 def isGoalAchieved(StateList, finalStates):
-   if finalStates.issubset(StateList):
-      return True
+   """ 
+   This function checks if all final states are present in the current states. 
+   Since we do not have any negative state, we just need to calculate
+   the subset condition.
+   """
+   if finalStates.issubset(StateList): return True
    return False
 
 def isGoalAchievedBackward(StateList, initialStates):
+   """
+   This function checks if all current states are initial states. 
+   The principal is a little different from the forwaerd version,
+   where all final states should be met.
+   """
    if StateList.issubset(initialStates): return True
    return False
 
 #-----------------------------------------------------------------
 
 
-
 #--------------Action-related functions---------------------------
 def applicable(stateSet, actionPrecon):
+   '''
+   This function is used in a progression planner where we want to see if a 
+   specific action can be applied based on the current set of states. For this,
+   All pre-conditions of an action should be present among current states.
+   '''
    precons = set([x["state_object"] for x in actionPrecon])
    if precons.issubset(stateSet):
       return True
    return False
 
 def apply(actionPrecon, actionEffect, currentStateSet):
-   # Currently, actions have only the id of the state, so we need all state to find the intended one, but with linkning state objects it will more performant.
-   # tasks: 
-      # add new final state - remove used preconditinos - search over stateObjects to find state objects
+   '''
+   This function will be called whenever a specific action is applicable.
+   Firstly, the preconditions of that action are removed (assumption of consuming pre-conditions),
+   and all effects of that action are also added.
+   Input arguments:
+      actionPrecon: set of objects of an action's preconditions
+      actionEffect: set of objects of an action's effects
+      currentStateSet: set contains all current states
+   '''
    precons = set([x["state_object"] for x in actionPrecon])
    newStateSet = currentStateSet.difference(precons)
    newStateSet.add(actionEffect)
    return newStateSet
 
 def applicableBackward(stateSet, actionEffect):
+   '''
+   This function checks if all effects of an action are present in the current states.
+   If so, it means we can backtrack from this action.
+   '''
    actioEffectSet = set()
    actioEffectSet.add(actionEffect)
    if actioEffectSet.issubset(stateSet):
@@ -125,52 +167,65 @@ def applicableBackward(stateSet, actionEffect):
    return False
 
 def applyBackward(actionPrecon, actionEffect, currentStateSet):
-   actioEffectSet = set()
-   actioEffectSet.add(actionEffect)
-   
-   newStateSet = currentStateSet.difference(actioEffectSet)
-
+   '''
+   This function applies an action in the backward fashion. So, firstly, all
+   effects of the action are removed and then all of its preconditions are added.
+   '''
+   actionEffectSet = set()
+   actionEffectSet.add(actionEffect)
+   newStateSet = currentStateSet.difference(actionEffectSet)
    for precon in actionPrecon:
       newStateSet.add(precon["state_object"])
    return newStateSet
 #-----------------------------------------------------------------
 
-def forwardPlanning(initialStates, finalStates, actionObjects, traversalMethod):
 
+#--------------Plan-related functions---------------------------
+def forwardPlanning(initialStates, finalStates, actionObjects, traversalMethod):
+   '''
+   This function performs the forward planning, by considering a fringe where its element is a list
+   with two elements [stateset,actionsequence], where stateset shows current states and actionsequence
+   shows which actions have been taken that we reached this set of states. Then iteratively, all actions
+   are tested to see if we can go backward or not.
+   Input arguments:
+         initialStates: set contains initial states
+         finalsStates: set contains final states
+         actionObjects: list of all objetcs of actions
+         traversalMethod: how we traverse the planning graph, for now only BFS is supported
+   '''
    # Setting Fringe Parameters
    fringe.setTraversalMethod(traversalMethod)
    fringe.initFringe()
-   # Planning Part:
+   # Fringe initialization
    fringe.insert([initialStates, []])
    visited = set([tuple(initialStates)])
    plans = []
    while(not fringe.isEmpty()):
+      # Each fringe element has this shape [stateSet, actionSequence]
       pathInfo = fringe.pop()
       stateSet = pathInfo[0]
       actionSequence = pathInfo[1]
-      print(f"Poped: {stateSet} - {actionSequence}")
       for act in actionObjects:
+         # if action is applicable
          if applicable(stateSet, act.preconditions):
+               # Apply the function
                newStateSet = apply(act.preconditions, act.finalState, stateSet)
                newActionSequence = actionSequence.copy()
-               # if tuple(newStateSet) not in visited:
+
                if isGoalAchieved(newStateSet, finalStates):
                   newActionSequence.append(act)
                   plans.append(newActionSequence)
-                  print(f"One plan Found! {newActionSequence}")
                else:
                   newActionSequence.append(act)
                   fringe.insert([newStateSet,newActionSequence ])
-                  print(newStateSet)
                   visited.add(tuple(newStateSet))
-      print("---")
-   print(f"{len(plans)} Plans Found!")
-   for plan in plans:
-      for act in plan:
-         print(f"Action ID: {act.id}")
-      print("################")
+   return plans
 
 def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod):
+   '''
+   This function, similar to the forward version, provides the algorithm to backtrack
+   all the way to the initial state.
+   '''
    # Setting Fringe Parameters
    fringe.setTraversalMethod(traversalMethod)
    fringe.initFringe()
@@ -182,50 +237,87 @@ def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod)
       pathInfo = fringe.pop()
       stateSet = pathInfo[0]
       actionSequence = pathInfo[1]
-      # print(f"Poped: {stateSet} - {actionSequence}")
       for act in actionObjects:
          if applicableBackward(stateSet, act.finalState):
                newStateSet = applyBackward(act.preconditions, act.finalState, stateSet)
                newActionSequence = actionSequence.copy()
-               # if tuple(newStateSet) not in visited:
                if isGoalAchievedBackward(newStateSet, initialStates):
                   newActionSequence.append(act)
-                  plans.append(newActionSequence)
-                  # print(f"One plan Found! {newActionSequence}")
+                  # plans.append(newActionSequence)
+                  plans.append(plan.Plan(actionSequence=newActionSequence))
                else:
                   newActionSequence.append(act)
                   fringe.insert([newStateSet,newActionSequence ])
-                  # print(newStateSet)
                   visited.add(tuple(newStateSet))
-      # print("---")
    return plans
 
-def printPlan(plan):
-   print("Sequence of actions: ")
-   for action in plan[:-1]:
-      print(f"{action}", end=" => ")
-   print(plan[-1])
+def visualizePlans(plans):
+   for plan in plans:
+      plan.getPlanVisualization()
+
+def printPlans(sortedPlans):
+   print(f"Total number of plans: {len(sortedPlans)}")
+   for plan in sortedPlans:
+      print(plan)
+      print("-"*20)
 
 
-def sortPlans(plans, actionObjects, optCriteria):
-   sortedPlans = sorted(plans, key=lambda plan: sum(action.getObjectives()[optCriteria] for action in plan))
-   criteria_values = [sum(action.getObjectives()[optCriteria] for action in plan) for plan in sortedPlans]
-   print(criteria_values)
-   for plan,criteria_value in zip(plans,criteria_values) :
-      printPlan(plan)
-      print(criteria_value)
+def visualizeSchedules(plans):
+   for plan in plans:
+      plan.getScheduleVisualization()
+
+
+def printSchedules(plans):
+   print(f"Total number of scheduled plans: {len(plans)}")
+   for plan in plans:
+      plan.schedulePrinting()
+      print("-"*20)
+
+def sortPlans(plans, optCriteria):
+   # sortedPlans = sorted(plans, key=lambda plan: sum(action.getObjectives()[optCriteria] for action in plan))
+   sortedPlans = sorted(plans, key=lambda plan: plan.computePlanValue(optCriteria))   
+   # criteria_values = [plan.getPlanValue(optCriteria) for plan in sortedPlans]
    return sortedPlans
 
+def pruneScheduledPlans(plans):
+   repeatedPlans = set()
+   for i in range(len(plans)):
+      for j in range(i+1, len(plans)):
+         if plans[i] == plans[j]:
+               repeatedPlans.add(plans[j].planId)
+   prunedPlans = []
+   for plan in plans:
+      if plan.planId not in repeatedPlans:
+         prunedPlans.append(plan)
+   return prunedPlans
       
+
+   
+
+
+#-----------------------------------------------------------------
 
 
 if __name__ == '__main__':
-   # load the JSON file
-   producerObjects, stateObjects, actionObjects, optCriteria = jsonReader("./JsonFiles/pddlExchangeExample7.json")
+   example_number = 10
+   producerObjects, stateObjects, actionObjects, optCriteria = jsonReader(f"./jsonFiles/pddlExchangeExample{example_number}.json")
    initialStates, finalStates = get_Init_Final_States(stateObjects)
    # forwardPlanning(initialStates, finalStates, actionObjects, "BFS")
    plans = backwardPlanning(initialStates, finalStates, actionObjects, "BFS")
-   sortedPlans = sortPlans(plans, actionObjects, optCriteria)
+   sortedPlans = sortPlans(plans, optCriteria)
+   printPlans(sortedPlans)
+   # VisualizePlans(sortedPlans)
+
+   outputFileName = f"./outputs/pddlExchangeExample{example_number}Solution.json"
+   writeToJson(sortedPlans, outputFileName)
+   
+   for planObj in sortedPlans:
+      planObj.schedule()
+
+   prunedPlans = pruneScheduledPlans(sortedPlans)
+   printSchedules(prunedPlans)
+   visualizeSchedules(prunedPlans)
+   # postprocess.postprocess(sortedPlans)
 
 
    

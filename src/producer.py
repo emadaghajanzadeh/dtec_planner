@@ -11,3 +11,10 @@ class Producer():
     
     def getValueChainParameters(self):
         return self.valueChainParameters
+    def getAllAttributes(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "trade": self.trade,
+            "valueChainParameters": self.valueChainParameters
+        }
