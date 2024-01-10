@@ -5,7 +5,6 @@ import time
 import postprocess
 import matplotlib.pyplot as plt
 # source /Users/emadaghajanzadeh/Documents/Work/Dtec/planner/planner_venv/bin/activate      
-
 def jsonReader(jsonFilename):
    """
    This function gets the address of the Json file, extracts its content, and instantiates objects corresponding to data types.
