@@ -59,10 +59,12 @@ class Action:
         pre_conditions_serializable = [elm["state_object"].getAllAttributes() for elm in self.preconditions]
         return {
             "id": self.id,
-            # Since it is included in the pre-conditions
+            # Since initial state is included in the pre-conditions
             # "initialStateId": self.initialState.getAllAttributes(),
-            "finalStateId": self.finalState.getAllAttributes(),
             "preconditions": pre_conditions_serializable,
+            "finalStateId": self.finalState.getAllAttributes(),
+            "startingPoint": self.startingPoint,
+            "endingPoint": self.endingPoint,
             "costs": self.costs,
             "producerId": self.producer.getAllAttributes(),
             "processingTimeInWeeks": self.processingTimeInWeeks,

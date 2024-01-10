@@ -16,7 +16,6 @@ class Plan():
         self.setActionSequence(actionSequence)
         self.planId = next(self.id_iter)
         
-
     def setActionSequence(self, actionSequence):
         self.actionSequence = copy.deepcopy(actionSequence[::-1])
 
@@ -48,26 +47,6 @@ class Plan():
         plt.xlabel("Time (In Week)")
         plt.title(f"Timeline of Plan {self.getPlanId()}, Value: {self.getPlanValue()}")
         plt.savefig(f"./outputs/planner_outputs/plan{self.getPlanId()}")
-    
-
-    def __str__(self):
-        """When the plan is called directly to be printed, print(planObject)"""
-        printingString = ""
-        printingString += f"PlanID {self.getPlanId()}: \n"
-        printingString += "Action Sequence: "
-        for action in self.actionSequence[:-1]:
-            printingString += (f"{action} => ")
-        printingString += (f"{self.actionSequence[-1]} \n")
-        printingString += f"Value: {self.getPlanValue()}"
-        return printingString
-    
-    def __repr__(self):
-        """When a list of plans are called to be printed, print(listOfPlans)"""
-        printingString = ""
-        for action in self.actionSequence[:-1]:
-            printingString += str(action)
-        printingString += str(self.actionSequence[-1])
-        return printingString
 
     def findProvider(self, precondIDList):
         '''This function recieves a list of pre-conditions and returns the time of the longest action among
@@ -144,6 +123,16 @@ class Plan():
         # self.getScheduleVisualization()
         # self.schedulePrinting()
 
+    def getDictInfo(self):
+        plan_dict = {}
+        actions = []
+        for action in self.getActionSequence():
+            actions.append(action.getAllAttributes())
+            plan_dict["plan_id"] = self.getPlanId()
+            plan_dict["plan_value"] = self.getPlanValue()
+            plan_dict["actions"] = actions
+        return plan_dict
+
 
     def __eq__(self, secondPlan):
         if not isinstance(secondPlan, Plan):
@@ -159,3 +148,21 @@ class Plan():
                 return False
         return True
 
+    def __str__(self):
+        """When the plan is called directly to be printed, print(planObject)"""
+        printingString = ""
+        printingString += f"PlanID {self.getPlanId()}: \n"
+        printingString += "Action Sequence: "
+        for action in self.actionSequence[:-1]:
+            printingString += (f"{action} => ")
+        printingString += (f"{self.actionSequence[-1]} \n")
+        printingString += f"Value: {self.getPlanValue()}"
+        return printingString
+    
+    def __repr__(self):
+        """When a list of plans are called to be printed, print(listOfPlans)"""
+        printingString = ""
+        for action in self.actionSequence[:-1]:
+            printingString += str(action)
+        printingString += str(self.actionSequence[-1])
+        return printingString

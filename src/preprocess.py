@@ -81,14 +81,7 @@ def writeToJson(sortedPlans, outputFileName):
       data["Number of Plans"] = len(sortedPlans)
       plans_list = [] # list of dictionaries (plans)
       for plan in sortedPlans:
-         plan_dict = {}
-         actions = []
-         for action in plan.getActionSequence():
-            actions.append(action.getAllAttributes())
-         plan_dict["plan_id"] = plan.getPlanId()
-         plan_dict["actions"] = actions
-         plan_dict["plan_value"] = plan.getPlanValue()
-         plans_list.append(plan_dict)
+         plans_list.append(plan.getDictInfo())
       data["plans"] = plans_list
    json_object = json.dumps(data, indent=4)
    with open(outputFileName, "w") as outfile:
@@ -307,9 +300,6 @@ if __name__ == '__main__':
    sortedPlans = sortPlans(plans, optCriteria)
    printPlans(sortedPlans)
    # VisualizePlans(sortedPlans)
-
-   outputFileName = f"./outputs/pddlExchangeExample{example_number}Solution.json"
-   writeToJson(sortedPlans, outputFileName)
    
    for planObj in sortedPlans:
       planObj.schedule()
@@ -317,6 +307,8 @@ if __name__ == '__main__':
    prunedPlans = pruneScheduledPlans(sortedPlans)
    printSchedules(prunedPlans)
    visualizeSchedules(prunedPlans)
+   outputFileName = f"./outputs/pddlExchangeExample{example_number}Solution.json"
+   writeToJson(prunedPlans, outputFileName)
    # postprocess.postprocess(sortedPlans)
 
 
