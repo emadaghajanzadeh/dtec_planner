@@ -13,7 +13,6 @@ if __name__ == '__main__':
    
    for planObj in sortedPlans:
       planObj.schedule()
-
    prunedPlans = schedulingOperations.pruneScheduledPlans(sortedPlans)
    schedulingOperations.printSchedules(prunedPlans)
    schedulingOperations.visualizeSchedules(prunedPlans)
