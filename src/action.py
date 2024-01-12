@@ -37,7 +37,7 @@ class Action:
         self.startingPoint = -1
         self.endingPoint = -1
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         attributes = [
             f"id={self.id}",
             # f"initialStateId={self.initialState}",
@@ -55,7 +55,8 @@ class Action:
     def __str__(self) -> str:
         return f"Action(id={self.id})"
     
-    def getAllAttributes(self):
+    def getAllAttributes(self) -> dict:
+        """This function returns all attributes of this class as a dictionary."""
         pre_conditions_serializable = [elm["state_object"].getAllAttributes() for elm in self.preconditions]
         return {
             "id": self.id,
@@ -71,12 +72,8 @@ class Action:
             "workingTimeInHours": self.workingTimeInHours
         }
 
-
-    def getObjectives(self):
-        '''
-        This function gets all objectives on which the optimization should be performed and returns them as a dictionary.
-        !! how to sum deliveryTimeLatestInWeeks with the other two variables?
-        '''
+    def getObjectives(self) -> dict:
+        """This function gets all objectives on which the optimization should be performed and returns them as a dictionary."""
         self.objectives["cost"] = self.costs
         self.objectives["workingTimeInHours"] = self.workingTimeInHours
         maxDeliveryTime = 0
@@ -93,6 +90,7 @@ class Action:
         if isinstance(otherAction, Action):
             return self.id == otherAction.id
         return False
+    
     def isEqualSchedule(self, otherAction: object) -> bool:
         """This function will be called to check if two actions which are the same are also scheduled the same way in two differen plans"""
         if self == otherAction:

@@ -9,9 +9,10 @@ class Producer():
     def __repr__(self) -> str:
         return f"Producer(id={self.id}, name='{self.name}', trade='{self.trade}', valueChainParameters={self.valueChainParameters})"
     
-    def getValueChainParameters(self):
+    def getValueChainParameters(self) -> dict:
         return self.valueChainParameters
-    def getAllAttributes(self):
+    
+    def getAllAttributes(self) -> dict:
         return {
             "id": self.id,
             "name": self.name,

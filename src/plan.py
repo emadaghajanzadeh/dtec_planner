@@ -16,23 +16,24 @@ class Plan():
         self.setActionSequence(actionSequence)
         self.planId = next(self.id_iter)
         
-    def setActionSequence(self, actionSequence):
+    def setActionSequence(self, actionSequence) -> None:
         self.actionSequence = copy.deepcopy(actionSequence[::-1])
 
-    def getActionSequence(self):
+    def getActionSequence(self) -> list:
         return self.actionSequence
 
-    def getPlanId(self):
+    def getPlanId(self) -> int:
         return self.planId
     
-    def computePlanValue(self, optimizationCriteria = "cost"):
+    def computePlanValue(self, optimizationCriteria = "cost") -> float:
+        """Calculates the value of plan with regards to a specific optimization criteria"""
         self.planValue = sum(action.getObjectives()[optimizationCriteria] for action in self.getActionSequence())
         return self.planValue
     
-    def getPlanValue(self):
+    def getPlanValue(self) -> float:
         return self.planValue
         
-    def getPlanVisualization(self):
+    def getPlanVisualization(self) -> None:
         plt.figure(figsize=(10,4))
         # Extract data from the plan
         y_values = list(range(len(self.getActionSequence())))
@@ -49,8 +50,10 @@ class Plan():
         plt.savefig(f"./outputs/planner_outputs/plan{self.getPlanId()}")
 
     def findProvider(self, precondIDList):
-        '''This function recieves a list of pre-conditions and returns the time of the longest action among
-        all actions that provide that pre-condition.'''
+        """This function recieves a list of pre-conditions and returns 
+            the length of the longest action among all actions that provide that pre-condition.
+            This function will be called when none of the pre-conditions of action should be availiable
+            from the beginning. In other words, The manufacturer can start his/her task even without any precondition."""
         max_length = 0
         for preconID in precondIDList:
             for action in self.getActionSequence():
@@ -61,8 +64,10 @@ class Plan():
         return max_length
     
     def findProviderV2(self, precondList):
-        '''This function recieves a list of pre-conditions and returns the time of the longest action among
-        all actions that provide that pre-condition.'''
+        """This function recieves a list of pre-conditions and returns the time of the longest action among
+            all actions that provide that pre-condition.
+            It is called when there is at least one pre-condition that needs to be avaliable from the starting
+            point of action."""
         optimal_start = 0
         for precon in precondList:
             state_object , deliveryTimeLatestInWeeks = precon['state_object'], precon['deliveryTimeLatestInWeeks']
@@ -75,7 +80,7 @@ class Plan():
 
         return optimal_start
 
-    def getScheduleVisualization(self):
+    def getScheduleVisualization(self) -> None:
         fig = plt.figure(figsize=(10,4))
         # Extract data from the plan
         y_values = list(range(len(self.getActionSequence())))
@@ -92,13 +97,16 @@ class Plan():
         plt.title(f"Timeline of Plan {self.getPlanId()}, Value: {self.getPlanValue()}")
         plt.savefig(f"./outputs/schedule_outputs/plan{self.planId}")
 
-    def schedulePrinting(self):
+    def schedulePrinting(self) -> None:
         print("Schedule Info:")
         for action in self.getActionSequence():
             print(f"{action}: [ {action.startingPoint}, {action.endingPoint} ]")
         print()
 
-    def schedule(self):
+    def schedule(self) -> None:
+        """This is the main function that does the scheduling.
+            It starts from the first to the last actions in the action sequence found by planner
+            and checks the timings and dependencies on pre-conditions."""
         starting_points = {}
         for action in self.getActionSequence():
             # print(action)
@@ -120,10 +128,7 @@ class Plan():
                 action.startingPoint = length - action.minDeliveryTime
                 action.endingPoint = action.startingPoint + action.processingTimeInWeeks
 
-        # self.getScheduleVisualization()
-        # self.schedulePrinting()
-
-    def getDictInfo(self):
+    def getDictInfo(self) -> dict:
         plan_dict = {}
         actions = []
         for action in self.getActionSequence():
@@ -133,8 +138,7 @@ class Plan():
             plan_dict["actions"] = actions
         return plan_dict
 
-
-    def __eq__(self, secondPlan):
+    def __eq__(self, secondPlan) -> bool:
         if not isinstance(secondPlan, Plan):
             return False
         if len(self.getActionSequence()) != len(secondPlan.getActionSequence()):
@@ -148,7 +152,7 @@ class Plan():
                 return False
         return True
 
-    def __str__(self):
+    def __str__(self) -> str:
         """When the plan is called directly to be printed, print(planObject)"""
         printingString = ""
         printingString += f"PlanID {self.getPlanId()}: \n"
@@ -159,7 +163,7 @@ class Plan():
         printingString += f"Value: {self.getPlanValue()}"
         return printingString
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         """When a list of plans are called to be printed, print(listOfPlans)"""
         printingString = ""
         for action in self.actionSequence[:-1]:
