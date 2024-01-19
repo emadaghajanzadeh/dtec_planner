@@ -3,7 +3,9 @@ import jsonOperations, stateListOperations, plannerOperations, schedulingOperati
 
 if __name__ == '__main__':
    example_number = 10
-   producerObjects, stateObjects, actionObjects, optCriteria = jsonOperations.jsonReader(f"./jsonFiles/pddlExchangeExample{example_number}.json")
+   example_file = f"./jsonFiles/pddlExchangeExample{example_number}.json"
+   # example_file = "./Examples/Example case.json"
+   producerObjects, stateObjects, actionObjects, optCriteria = jsonOperations.jsonReader(example_file)
    initialStates, finalStates = stateListOperations.get_Init_Final_States(stateObjects)
    # plannerOperations.forwardPlanning(initialStates, finalStates, actionObjects, "BFS")
    plans = plannerOperations.backwardPlanning(initialStates, finalStates, actionObjects, "BFS")
