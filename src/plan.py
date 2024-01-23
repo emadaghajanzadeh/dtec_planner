@@ -31,6 +31,7 @@ class Plan():
         return self.planValue
     
     def getPlanValue(self) -> float:
+        return self.computePlanValue()
         return self.planValue
         
     def getPlanVisualization(self) -> None:

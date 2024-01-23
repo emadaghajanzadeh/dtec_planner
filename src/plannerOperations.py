@@ -102,6 +102,7 @@ def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod)
    fringe.insert([finalStates, []])
    visited = set([tuple(finalStates)])
    plans = []
+   
    while(not fringe.isEmpty()):
       pathInfo = fringe.pop()
       stateSet = pathInfo[0]
@@ -114,6 +115,7 @@ def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod)
                   newActionSequence.append(act)
                   # plans.append(newActionSequence)
                   plans.append(plan.Plan(actionSequence=newActionSequence))
+                  
                else:
                   newActionSequence.append(act)
                   fringe.insert([newStateSet,newActionSequence ])
