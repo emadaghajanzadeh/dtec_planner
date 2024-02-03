@@ -16,23 +16,21 @@ Instructions on how to install the project and how to get started.
 - git clone https://conf.informatik.uni-hamburg.de/dtec/planner.git
 - Run pip install -r requirements.txt
 - Locate your Json input file in the inputs directory, and provide the file name as the input argument along with an arbitrary name for the corresponding output folder. If you wish to see the solution and the visual representation of the solution, use the --print and --visualize arguments, respectively. Run the program using the following command:
-- - ```python src/main.py --input <input_file> --output <output_file> --print --visualize```
+    - ```python src/main.py --input <input_file> --output <output_file> --print --visualize```
 
 - To see the help menu, run the following command:
 
-```python src/main.py --help```
+    - ```python src/main.py --help```
 
 ## Usage
 
 Instructions on how to use the project and how to get started.
 
 Example 1:
-
-```python src/main.py --input sample1.json --output sample1 --print --visualize```
+    - ```python src/main.py --input sample1.json --output sample1 --print --visualize```
 
 Example 2:
-
-```python src/main.py --input sample2.json --output sample2 --print --visualize```
+    - ```python src/main.py --input sample2.json --output sample2 --print --visualize```
 
 ## Contributing
 
