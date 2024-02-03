@@ -26,10 +26,10 @@ Instructions on how to install the project and how to get started.
 
 Instructions on how to use the project and how to get started.
 
-Example 1:
+- Example 1:
     - ```python src/main.py --input sample1.json --output sample1 --print --visualize```
 
-Example 2:
+- Example 2:
     - ```python src/main.py --input sample2.json --output sample2 --print --visualize```
 
 ## Contributing
