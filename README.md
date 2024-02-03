@@ -28,9 +28,13 @@ Instructions on how to use the project and how to get started.
 
 - Example 1:
     - ```python src/main.py --input sample1.json --output sample1 --print --visualize```
+    - This will make a folder named sample1 in the outputs directory saves the following files:
+        - sample1.json: The detailed solution in Json format
+        - plans/*.png: The visual representations of the plans found. Below you can see an example of the visual representation of the plan found for the sample1.json file:
+        ![sample_plan_output](assets/sample_plan_output.png)
+        - schedules/*.png: The visual representations of the schedules for the plans found. Below you can see an example of the visual representation of the schedule found for the sample1.json file:
+        ![sample_schedule_output](assets/sample_scheduled_plan_output.png)
 
-- Example 2:
-    - ```python src/main.py --input sample2.json --output sample2 --print --visualize```
 
 ## Contributing
 

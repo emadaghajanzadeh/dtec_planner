@@ -96,7 +96,7 @@ class Plan():
         plt.yticks(y_values, [str(action) for action in self.getActionSequence()])
         plt.xlabel("Time (In Week)")
         plt.title(f"Timeline of Plan {self.getPlanId()}, Value: {self.getPlanValue()}")
-        plt.savefig(f"{output_file_schedules}/plan{self.planId}")
+        plt.savefig(f"{output_file_schedules}/Scheduled_plan_{self.planId}")
 
     def schedulePrinting(self) -> None:
         print("Schedule Info:")
