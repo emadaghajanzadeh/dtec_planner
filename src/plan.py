@@ -1,7 +1,7 @@
 import copy
 import matplotlib.pyplot as plt
 import itertools
-# Plot functions
+
 def timelines(y, xstart, xstop, color='b'):
     """Plot timelines at y from xstart to xstop with given color."""   
     plt.hlines(y, xstart, xstop, color, lw=4)

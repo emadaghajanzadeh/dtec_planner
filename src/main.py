@@ -13,7 +13,7 @@ if __name__ == '__main__':
    # print(plans)
    sortedPlans = plannerOperations.sortPlans(plans, optCriteria)
    plannerOperations.printPlans(sortedPlans)
-   # VisualizePlans(sortedPlans)
+   plannerOperations.visualizePlans(sortedPlans)
    
    for planObj in sortedPlans:
       planObj.schedule()
@@ -22,6 +22,5 @@ if __name__ == '__main__':
    schedulingOperations.visualizeSchedules(prunedPlans)
    outputFileName = f"./outputs/pddlExchangeExample{example_number}Solution.json"
    jsonOperations.writeToJson(prunedPlans, outputFileName, optCriteria)
-
 
    

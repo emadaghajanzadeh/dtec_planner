@@ -115,7 +115,7 @@ def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod)
                   newActionSequence.append(act)
                   # plans.append(newActionSequence)
                   plans.append(plan.Plan(actionSequence=newActionSequence))
-                  
+                  print(plans[-1])
                else:
                   newActionSequence.append(act)
                   fringe.insert([newStateSet,newActionSequence ])
