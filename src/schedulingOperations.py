@@ -1,7 +1,7 @@
 
-def visualizeSchedules(plans):
+def visualizeSchedules(plans, output_file_schedules):
    for plan in plans:
-      plan.getScheduleVisualization()
+      plan.getScheduleVisualization(output_file_schedules)
 
 def printSchedules(plans):
    print(f"Total number of scheduled plans: {len(plans)}")

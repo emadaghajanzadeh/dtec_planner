@@ -122,9 +122,9 @@ def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod)
                   visited.add(tuple(newStateSet))
    return plans
 
-def visualizePlans(plans):
+def visualizePlans(plans, output_file_plans):
    for plan in plans:
-      plan.getPlanVisualization()
+      plan.getPlanVisualization(output_file_plans)
 
 def printPlans(sortedPlans):
    print(f"Total number of plans: {len(sortedPlans)}")

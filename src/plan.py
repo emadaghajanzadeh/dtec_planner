@@ -34,7 +34,7 @@ class Plan():
         return self.computePlanValue()
         return self.planValue
         
-    def getPlanVisualization(self) -> None:
+    def getPlanVisualization(self, output_file_plans) -> None:
         plt.figure(figsize=(10,4))
         # Extract data from the plan
         y_values = list(range(len(self.getActionSequence())))
@@ -48,7 +48,7 @@ class Plan():
         plt.yticks(y_values, [str(action) for action in self.getActionSequence()])
         plt.xlabel("Time (In Week)")
         plt.title(f"Timeline of Plan {self.getPlanId()}, Value: {self.getPlanValue()}")
-        plt.savefig(f"./outputs/planner_outputs/plan{self.getPlanId()}")
+        plt.savefig(f"{output_file_plans}/plan{self.getPlanId()}")
 
     def findProvider(self, precondIDList):
         """This function recieves a list of pre-conditions and returns 
@@ -81,7 +81,7 @@ class Plan():
 
         return optimal_start
 
-    def getScheduleVisualization(self) -> None:
+    def getScheduleVisualization(self, output_file_schedules) -> None:
         fig = plt.figure(figsize=(10,4))
         # Extract data from the plan
         y_values = list(range(len(self.getActionSequence())))
@@ -96,7 +96,7 @@ class Plan():
         plt.yticks(y_values, [str(action) for action in self.getActionSequence()])
         plt.xlabel("Time (In Week)")
         plt.title(f"Timeline of Plan {self.getPlanId()}, Value: {self.getPlanValue()}")
-        plt.savefig(f"./outputs/schedule_outputs/plan{self.planId}")
+        plt.savefig(f"{output_file_schedules}/plan{self.planId}")
 
     def schedulePrinting(self) -> None:
         print("Schedule Info:")

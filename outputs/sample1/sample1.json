@@ -1,0 +1,172 @@
+{
+    "optimizeFor": "cost",
+    "Minimum Plan": 680,
+    "Maximum Plan": 1000,
+    "Number of Plans": 2,
+    "plans": [
+        {
+            "plan_id": 1,
+            "plan_value": 680,
+            "actions": [
+                {
+                    "id": 2,
+                    "preconditions": [
+                        {
+                            "id": 3,
+                            "name": "Zugeschnittene Platten",
+                            "isStartState": true,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 5,
+                        "name": "Montiertes Gestell",
+                        "isStartState": false,
+                        "isFinalState": false
+                    },
+                    "startingPoint": 0,
+                    "endingPoint": 4,
+                    "costs": 300,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 4,
+                    "workingTimeInHours": 8.5
+                },
+                {
+                    "id": 1,
+                    "preconditions": [
+                        {
+                            "id": 2,
+                            "name": "Rohmaterial Glas",
+                            "isStartState": true,
+                            "isFinalState": false
+                        },
+                        {
+                            "id": 1,
+                            "name": "Rohmaterial Holz",
+                            "isStartState": true,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 4,
+                        "name": "Gelochte Platten",
+                        "isStartState": false,
+                        "isFinalState": false
+                    },
+                    "startingPoint": 0,
+                    "endingPoint": 2.5,
+                    "costs": 280,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 2.5,
+                    "workingTimeInHours": 8.5
+                },
+                {
+                    "id": 3,
+                    "preconditions": [
+                        {
+                            "id": 5,
+                            "name": "Montiertes Gestell",
+                            "isStartState": false,
+                            "isFinalState": false
+                        },
+                        {
+                            "id": 4,
+                            "name": "Gelochte Platten",
+                            "isStartState": false,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 6,
+                        "name": "Kommode Alpha",
+                        "isStartState": false,
+                        "isFinalState": true
+                    },
+                    "startingPoint": 3,
+                    "endingPoint": 6,
+                    "costs": 100,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 3,
+                    "workingTimeInHours": 8.5
+                }
+            ]
+        },
+        {
+            "plan_id": 0,
+            "plan_value": 1000,
+            "actions": [
+                {
+                    "id": 4,
+                    "preconditions": [
+                        {
+                            "id": 2,
+                            "name": "Rohmaterial Glas",
+                            "isStartState": true,
+                            "isFinalState": false
+                        },
+                        {
+                            "id": 3,
+                            "name": "Zugeschnittene Platten",
+                            "isStartState": true,
+                            "isFinalState": false
+                        },
+                        {
+                            "id": 1,
+                            "name": "Rohmaterial Holz",
+                            "isStartState": true,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 6,
+                        "name": "Kommode Alpha",
+                        "isStartState": false,
+                        "isFinalState": true
+                    },
+                    "startingPoint": 0,
+                    "endingPoint": 8,
+                    "costs": 1000,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 8,
+                    "workingTimeInHours": 8.5
+                }
+            ]
+        }
+    ]
+}

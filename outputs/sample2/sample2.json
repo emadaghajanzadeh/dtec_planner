@@ -1,0 +1,312 @@
+{
+    "optimizeFor": "socialCommitment",
+    "Minimum Plan": 280,
+    "Maximum Plan": 1120,
+    "Number of Plans": 3,
+    "plans": [
+        {
+            "plan_id": 0,
+            "plan_value": 280,
+            "actions": [
+                {
+                    "id": 5,
+                    "preconditions": [
+                        {
+                            "id": 3,
+                            "name": "Zugeschnittene Platten",
+                            "isStartState": true,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 7,
+                        "name": "Fertige Glasplatte",
+                        "isStartState": false,
+                        "isFinalState": true
+                    },
+                    "startingPoint": 0,
+                    "endingPoint": 2.5,
+                    "costs": 280,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 2.5,
+                    "workingTimeInHours": 8.5
+                }
+            ]
+        },
+        {
+            "plan_id": 1,
+            "plan_value": 840,
+            "actions": [
+                {
+                    "id": 1,
+                    "preconditions": [
+                        {
+                            "id": 2,
+                            "name": "Rohmaterial Glas",
+                            "isStartState": true,
+                            "isFinalState": false
+                        },
+                        {
+                            "id": 1,
+                            "name": "Rohmaterial Holz",
+                            "isStartState": true,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 4,
+                        "name": "Gelochte Platten",
+                        "isStartState": false,
+                        "isFinalState": false
+                    },
+                    "startingPoint": 0,
+                    "endingPoint": 2.5,
+                    "costs": 280,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 2.5,
+                    "workingTimeInHours": 8.5
+                },
+                {
+                    "id": 6,
+                    "preconditions": [
+                        {
+                            "id": 4,
+                            "name": "Gelochte Platten",
+                            "isStartState": false,
+                            "isFinalState": false
+                        },
+                        {
+                            "id": 3,
+                            "name": "Zugeschnittene Platten",
+                            "isStartState": true,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 8,
+                        "name": "Fertige Glasplatte",
+                        "isStartState": false,
+                        "isFinalState": false
+                    },
+                    "startingPoint": 1.0,
+                    "endingPoint": 3.5,
+                    "costs": 280,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 2.5,
+                    "workingTimeInHours": 8.5
+                },
+                {
+                    "id": 7,
+                    "preconditions": [
+                        {
+                            "id": 8,
+                            "name": "Fertige Glasplatte",
+                            "isStartState": false,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 7,
+                        "name": "Fertige Glasplatte",
+                        "isStartState": false,
+                        "isFinalState": true
+                    },
+                    "startingPoint": 3.5,
+                    "endingPoint": 6.0,
+                    "costs": 280,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 2.5,
+                    "workingTimeInHours": 8.5
+                }
+            ]
+        },
+        {
+            "plan_id": 2,
+            "plan_value": 1120,
+            "actions": [
+                {
+                    "id": 1,
+                    "preconditions": [
+                        {
+                            "id": 2,
+                            "name": "Rohmaterial Glas",
+                            "isStartState": true,
+                            "isFinalState": false
+                        },
+                        {
+                            "id": 1,
+                            "name": "Rohmaterial Holz",
+                            "isStartState": true,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 4,
+                        "name": "Gelochte Platten",
+                        "isStartState": false,
+                        "isFinalState": false
+                    },
+                    "startingPoint": 0,
+                    "endingPoint": 2.5,
+                    "costs": 280,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 2.5,
+                    "workingTimeInHours": 8.5
+                },
+                {
+                    "id": 3,
+                    "preconditions": [
+                        {
+                            "id": 4,
+                            "name": "Gelochte Platten",
+                            "isStartState": false,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 6,
+                        "name": "Fertige Glasplatte",
+                        "isStartState": false,
+                        "isFinalState": false
+                    },
+                    "startingPoint": 2.5,
+                    "endingPoint": 5.0,
+                    "costs": 280,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 2.5,
+                    "workingTimeInHours": 8.5
+                },
+                {
+                    "id": 2,
+                    "preconditions": [
+                        {
+                            "id": 3,
+                            "name": "Zugeschnittene Platten",
+                            "isStartState": true,
+                            "isFinalState": false
+                        },
+                        {
+                            "id": 2,
+                            "name": "Rohmaterial Glas",
+                            "isStartState": true,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 5,
+                        "name": "Montiertes Gestell",
+                        "isStartState": false,
+                        "isFinalState": false
+                    },
+                    "startingPoint": 0,
+                    "endingPoint": 2.5,
+                    "costs": 280,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 2.5,
+                    "workingTimeInHours": 8.5
+                },
+                {
+                    "id": 4,
+                    "preconditions": [
+                        {
+                            "id": 6,
+                            "name": "Fertige Glasplatte",
+                            "isStartState": false,
+                            "isFinalState": false
+                        },
+                        {
+                            "id": 5,
+                            "name": "Montiertes Gestell",
+                            "isStartState": false,
+                            "isFinalState": false
+                        }
+                    ],
+                    "finalStateId": {
+                        "id": 7,
+                        "name": "Fertige Glasplatte",
+                        "isStartState": false,
+                        "isFinalState": true
+                    },
+                    "startingPoint": 3.5,
+                    "endingPoint": 6.0,
+                    "costs": 280,
+                    "producerId": {
+                        "id": 1,
+                        "name": "Schreinerei Frank & S\u00f6hne",
+                        "trade": "carpenter",
+                        "valueChainParameters": {
+                            "socialCommitment": 3.5,
+                            "familyFriendly": 4,
+                            "sustainability": 2
+                        }
+                    },
+                    "processingTimeInWeeks": 2.5,
+                    "workingTimeInHours": 8.5
+                }
+            ]
+        }
+    ]
+}

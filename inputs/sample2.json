@@ -1,0 +1,164 @@
+{
+    "optimizeFor": "socialCommitment",
+    "producer": [
+        {
+            "id": 1,
+            "name": "Schreinerei Frank & Söhne",
+            "trade": "carpenter",
+            "valueChainParameters": {
+                "socialCommitment": 3.5,
+                "familyFriendly": 4,
+                "sustainability": 2
+            }
+        },
+        {
+            "id": 2,
+            "name": "Glaserei Durchblick",
+            "trade": "glazier",
+            "valueChainParameters": {
+                "socialCommitment": 3,
+                "familyFriendly": 2,
+                "sustainability": 5
+            }
+        },
+        {
+            "id": 3,
+            "name": "Glaserei Durchblick",
+            "trade": "glazier",
+            "valueChainParameters": {
+                "socialCommitment": 3,
+                "familyFriendly": 2,
+                "sustainability": 5
+            }
+        }
+    ],
+    "states": [
+        {
+            "id": 1,
+            "name": "Rohmaterial Holz",
+            "isStartState": true
+        },
+        {
+            "id": 2,
+            "name": "Rohmaterial Glas",
+            "isStartState": true
+        },
+        {
+            "id": 3,
+            "name": "Zugeschnittene Platten",
+            "isStartState": true
+        },
+        {
+            "id": 4,
+            "name": "Gelochte Platten"
+        },
+        {
+            "id": 5,
+            "name": "Montiertes Gestell"
+        },
+        {
+            "id": 6,
+            "name": "Fertige Glasplatte"
+        },
+        {
+            "id": 7,
+            "name": "Fertige Glasplatte",
+            "isFinalState": true
+
+        },
+        {
+            "id": 8,
+            "name": "Fertige Glasplatte"
+        }
+    ],
+    "processSteps": [
+        {
+            "id": 1,
+            "initialStateId": 1,
+            "finalStateId": 4,
+            "preconditions": [ 
+                {
+                    "id": 2,
+                    "deliveryTimeLatestInWeeks": 1.5
+                }
+            ],
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 2.5,
+            "workingTimeInHours": 8.5
+        },
+        {
+            "id": 2,
+            "initialStateId": 2,
+            "finalStateId": 5,
+            "preconditions": [ 
+                {
+                    "id": 3,
+                    "deliveryTimeLatestInWeeks": 1.5
+                }
+            ],
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 2.5,
+            "workingTimeInHours": 8.5
+        },
+        {
+            "id": 3,
+            "initialStateId": 4,
+            "finalStateId": 6,
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 2.5,
+            "workingTimeInHours": 8.5
+        },
+        {
+            "id": 4,
+            "initialStateId": 5,
+            "finalStateId": 7,
+            "preconditions": [ 
+                {
+                    "id": 6,
+                    "deliveryTimeLatestInWeeks": 1.5
+                }
+            ],
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 2.5,
+            "workingTimeInHours": 8.5
+        },
+        {
+            "id": 5,
+            "initialStateId": 3,
+            "finalStateId": 7,
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 2.5,
+            "workingTimeInHours": 8.5
+        },
+        {
+            "id": 6,
+            "initialStateId": 3,
+            "finalStateId": 8,
+            "preconditions": [ 
+                {
+                    "id": 4,
+                    "deliveryTimeLatestInWeeks": 1.5
+                }
+            ],
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 2.5,
+            "workingTimeInHours": 8.5
+        },
+        {
+            "id": 7,
+            "initialStateId": 8,
+            "finalStateId": 7,
+            "costs": 280,
+            "producerId": 1,
+            "processingTimeInWeeks": 2.5,
+            "workingTimeInHours": 8.5
+        }
+    ]
+}
+

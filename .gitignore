@@ -1,6 +1,5 @@
 .vscode
 jsonFiles
-outputs
 planner_venv
 planner.code-workspace
 .dockerignore
