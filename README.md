@@ -29,11 +29,30 @@ Instructions on how to use the project and how to get started.
 - Example 1:
     - ```python src/main.py --input sample1.json --output sample1 --print --visualize```
     - This will make a folder named sample1 in the outputs directory saves the following files:
-        - sample1.json: The detailed solution in Json format
         - plans/*.png: The visual representations of the plans found. Below you can see an example of the visual representation of the plan found for the sample1.json file:
         ![sample_plan_output](assets/sample_plan_output.png)
         - schedules/*.png: The visual representations of the schedules for the plans found. Below you can see an example of the visual representation of the schedule found for the sample1.json file:
         ![sample_schedule_output](assets/sample_scheduled_plan_output.png)
+        - sample1.json: The detailed solution in Json format. The output Json file contains the following information:
+            - optimizeFor: The objective function used to optimize the plan.
+            - Minimum Plan: The value of minimum plan found.
+            - Maximum Plan: The value of maximum plan found.
+            - Number of Plans: The number of plans found.
+            - Plans: The detailed plans found. Moreover, each plan contains the following information:
+                - plan_id
+                - plan_value
+                - actions: Also actions contain the following information:
+                    - id
+                    - preconditions: list of preconditions
+                    - finalStateId: The final state of the action
+                    - startingPoint: The starting point of the action based on the result of scheduling
+                    - endingPoint: The ending point of the action based on the result of scheduling
+                    - costs: The cost of the action
+                    - producerId:  Id of the producer of the action
+                    - processingTimeInWeeks
+                    - workingTimeInHours
+
+
 
 
 ## Contributing
