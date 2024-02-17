@@ -50,6 +50,16 @@ def applyBackward(actionPrecon, actionEffect, currentStateSet):
       newStateSet.add(precon["state_object"])
    return newStateSet
 
+def isMaximumCostExceeded(actionSeq, newAction, max_cost):
+   '''
+   This function checks if the cost of a plan is exceeded the maximum cost.
+   '''
+   current_cost = sum(action.getObjectives()["cost"] for action in actionSeq)
+   current_cost += newAction.getObjectives()["cost"]
+   if max_cost != -1 and current_cost > max_cost:
+      return True
+   return False
+
 def forwardPlanning(initialStates, finalStates, actionObjects, traversalMethod):
    '''
    This function performs the forward planning, by considering a fringe where its element is a list
@@ -90,7 +100,7 @@ def forwardPlanning(initialStates, finalStates, actionObjects, traversalMethod):
                   visited.add(tuple(newStateSet))
    return plans
 
-def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod):
+def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod, max_cost=-1):
    '''
    This function, similar to the forward version, provides the algorithm to backtrack
    all the way to the initial state.
@@ -108,7 +118,7 @@ def backwardPlanning(initialStates, finalStates, actionObjects, traversalMethod)
       stateSet = pathInfo[0]
       actionSequence = pathInfo[1]
       for act in actionObjects:
-         if applicableBackward(stateSet, act.finalState):
+         if applicableBackward(stateSet, act.finalState) and (not isMaximumCostExceeded(actionSequence, act, max_cost)):
                newStateSet = applyBackward(act.preconditions, act.finalState, stateSet)
                newActionSequence = actionSequence.copy()
                if stateListOperations.isGoalAchievedBackward(newStateSet, initialStates):

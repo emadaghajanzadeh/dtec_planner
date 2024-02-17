@@ -16,6 +16,8 @@ parser.add_argument("--visualize", action="store_true", default=False,
                     help="Visualize the plans or not. If yes, it will visualize the plans.")
 parser.add_argument("--output", type=str, required=True,
                      help="The address to which the output file should be written.")
+parser.add_argument("--max-cost", type=int, required=False, default=-1,
+                     help="The maximum cost for searching the plans.")
 
 
 
@@ -29,6 +31,7 @@ if __name__ == '__main__':
    printFlag = args.print
    visualizeFlag = args.visualize
    output_file = args.output
+   max_cost = args.max_cost
    
 
    
@@ -49,7 +52,7 @@ if __name__ == '__main__':
    producerObjects, stateObjects, actionObjects, optCriteria = jsonOperations.jsonReader(input_file)
    initialStates, finalStates = stateListOperations.get_Init_Final_States(stateObjects)
    # Perform the planning
-   plans = plannerOperations.backwardPlanning(initialStates, finalStates, actionObjects, algo)
+   plans = plannerOperations.backwardPlanning(initialStates, finalStates, actionObjects, algo, max_cost)
    # Sort the plans based on the optimization criteria
    sortedPlans = plannerOperations.sortPlans(plans, optCriteria)
    # Print the plans
