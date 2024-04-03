@@ -69,11 +69,11 @@ def jsonReader(jsonFilename):
 def writeToJson(sortedPlans, outputFileName, optCriteria):
    """Writing the output into the Json file."""
    if len(sortedPlans) == 0:
-      data = {"optimizeFor": optCriteria, "Minimum Plan": "-", "Maximum Plan":"-",
+      data = {"optimizeFor": optCriteria, "minimumPlan": "-", "maximumPlan":"-",
               "Number of Plans":0}
    else:
-      data = {"optimizeFor": optCriteria, "Minimum Plan":sortedPlans[0].getPlanValue(), "Maximum Plan":sortedPlans[-1].getPlanValue()}
-      data["Number of Plans"] = len(sortedPlans)
+      data = {"optimizeFor": optCriteria, "minimumPlan":sortedPlans[0].getPlanValue(), "minimumPlan":sortedPlans[-1].getPlanValue()}
+      data["numberOfPlans"] = len(sortedPlans)
       plans_list = [] # list of dictionaries (plans)
       for plan in sortedPlans:
          plans_list.append(plan.getDictInfo())
