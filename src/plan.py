@@ -134,8 +134,8 @@ class Plan():
         actions = []
         for action in self.getActionSequence():
             actions.append(action.getAllAttributes())
-            plan_dict["plan_id"] = self.getPlanId()
-            plan_dict["plan_value"] = self.getPlanValue()
+            plan_dict["planId"] = self.getPlanId()
+            plan_dict["planValue"] = self.getPlanValue()
             plan_dict["actions"] = actions
         return plan_dict
 
