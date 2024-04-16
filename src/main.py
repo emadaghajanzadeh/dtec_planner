@@ -1,7 +1,6 @@
 import os
 import jsonOperations, stateListOperations, plannerOperations, schedulingOperations
 import argparse
-# source /Users/emadaghajanzadeh/Documents/Work/Dtec/planner/planner_venv/bin/activate
 
 
 parser = argparse.ArgumentParser()
